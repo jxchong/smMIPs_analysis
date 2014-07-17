@@ -11,7 +11,7 @@
 # 1 = filename of sample key (3 columns, see below)
 # 2 = filename of MIP design file
 # 3 = filename of BED file containing final MIP regions of each gene
-# 4 = read length
+# 4 = number of bases overlapping between forward and reverse reads (determines whether or not to use PEAR)
 # 5 = your email address
 # 6 = an identifying name for this project (e.g. "2013-01-01-My_MIPS_Project")
 # 7 = sequencer used (HiSeqDorschner|HiSeqNickerson|MiSeq)

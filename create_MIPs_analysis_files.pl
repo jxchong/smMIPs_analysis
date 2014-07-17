@@ -13,13 +13,13 @@ use Pod::Usage;
 
 my $headbin = '/labdata6/allabs/mips/pipeline_Shendure_v0.9.7';
 
-my ($samplesheet, $designfile, $mipbedfile, $readlength, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
+my ($samplesheet, $designfile, $mipbedfile, $readoverlapbp, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
 
 GetOptions(
 	'samplesheet=s' => \$samplesheet, 
 	'designfile=s' => \$designfile,
 	'MIPbed=s' => \$mipbedfile,
-	'readlength=i' => \$readlength,
+	'readoverlapbp=i' => \$readoverlapbp,
 	'email=s' => \$email,
 	'projectname=s' => \$projectname,
 	'sequencer=s' => \$sequencer,
@@ -33,8 +33,8 @@ if (!defined $samplesheet) {
 	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --designfile not defined\n");
 } elsif (!defined $mipbedfile) {
 	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --MIPbed not defined\n");
-} elsif (!defined $readlength) {
-	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --readlength not defined\n");
+} elsif (!defined $readoverlapbp) {
+	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --readoverlapbp not defined\n");
 } elsif (!defined $email) {
 	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --email not defined\n");
 } elsif (!defined $projectname) {
@@ -58,7 +58,7 @@ if ($inputcheck == 1) {
 	print "--samplesheet $samplesheet\n";
 	print "--designfile $designfile\n";
 	print "--MIPbed $mipbedfile\n";
-	print "--readlength $readlength\n";
+	print "--readoverlapbp $readoverlapbp\n";
 	print "--projectname $projectname\n";
 	print "--sequencer $sequencer\n";
 } else {
@@ -73,11 +73,11 @@ my $samplekey = makeSampleKey($samplesheet);
 
 
 # copy all the relevant Bash, queue submission scripts to current directory.
-if ($readlength >= 110) {
-	`cp $headbin/v2kit/sub_*.sh .`;
-} elsif ($readlength <= 80) {
+if ($readoverlapbp >= 10) {
+	`cp $headbin/sub_*.sh .`;
+} elsif ($readoverlapbp < 10) {
 	# specific pipeline not written yet since Bamshad lab doesn't use v3 kits
-	`cp $headbin/v3kit/sub_*.sh .`;
+	`cp $headbin/sub_*.sh .`;
 }
 
 
@@ -101,7 +101,7 @@ while ( <$input_handle> ) {
 	$line =~ s/ \$1/ $samplekey/g;					# 1 = filename of sample key (2+ columns, see below)
 	$line =~ s/ \$2/ $designfile/g;					# 2 = filename of MIP design file
 	$line =~ s/ \$3/ $mipbedfile/g;					# 3 = filename of BED file containing final MIP regions of each gene
-	$line =~ s/ \$4/ $readlength/g;					# 4 = read length
+	$line =~ s/ \$4/ $readoverlapbp/g;					# 4 = read length
 	$line =~ s/ \$5/ $email/g;						# 5 = your email address
 	$line =~ s/ \$6/ $projectname/g;				# 6 = an identifying name for this project (e.g. "2013-01-01-My_MIPS_Project")
 	$line =~ s/ \$7/ $sequencer/g;					# 7 = the sequencer used to generate the fastqs (MiSeq or HiSeq)
@@ -133,8 +133,8 @@ sub validateInputs {
 	
 	if ($projectname =~ m/\!\/ \\:/) {
 		$inputcheck = "--projectname $projectname contains problematic characters (! / \ : [space])";
-	} elsif ($readlength < 20) {
-		$inputcheck = "--readlength $readlength under 20 bases, are you sure?\n";
+	} elsif ($readoverlapbp < 20) {
+		$inputcheck = "--readoverlapbp $readoverlapbp under 20 bases, are you sure?\n";
 	}	
 	
 	system("dos2unix $designfile");
@@ -277,7 +277,7 @@ perl B<create_MIPs_analysis_files.pl> I<[options]>
 
 	path to BED file containing all MIP regions
 
-=item B<--readlength> F<integer>
+=item B<--readoverlapbp> F<integer>
 
 	desired read length to trim to (probably 76 to 110 bp)
 
@@ -334,7 +334,7 @@ BED file with MIPs: merged BED file with final MIP regions for each gene; create
 =head1 EXAMPLES
 
 
-perl create_MIPs_analysis_files.pl --samplesheet PIEZO2.samplekey.txt --designfile PIEZO2_allMIPs.designfile.txt --MIPbed PIEZO2_mips.bed --readlength 110 --email jxchong@uw.edu --projectname 2014-02-28-PIEZO2_analysis1
+perl create_MIPs_analysis_files.pl --samplesheet PIEZO2.samplekey.txt --designfile PIEZO2_allMIPs.designfile.txt --MIPbed PIEZO2_mips.bed --readoverlapbp 20 --email jxchong@uw.edu --projectname 2014-02-28-PIEZO2_analysis1
 
 Also see /labdata6/allabs/mips/pipeline_Shendure_v0.9.7/examples/
 
