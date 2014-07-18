@@ -22,8 +22,8 @@
 # $4 = your email address
 # $5 = group to assign permissions to
 
-mipgentoolsbin='/labdata6/allabs/mips/pipeline_Shendure_v0.9.7/MIPGEN/tools'
-executbin='/labdata6/allabs/mips/pipeline_Shendure_v0.9.7/executables'
+mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
+executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/executables'
 refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 
@@ -33,7 +33,8 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
 module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55
 #######################################################################################
-
+export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools/
+#######################################################################################
 
 
 set -e
@@ -45,9 +46,14 @@ find */* -name "*.indexed.sort.collapse.all_reads.unique.sort.bam" > bam.list
 printf "done\n"
 
 
-printf "Creating a master complexity file for all samples\n"
-echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.indexed.sort.collapse.complexity.txt
-find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.complexity.txt
+printf "Creating a master complexity file for all samples for all mips\n"
+echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.allsamples.indexed.sort.collapse.complexity.txt
+find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamples.indexed.sort.collapse.complexity.txt
+printf "done\n"
+
+
+printf "Creating a mater mipwise complexity file\n"
+python calc_complexity_demultiplexed.py --samplekey $1 --projectname $2
 printf "done\n"
 
 
@@ -55,12 +61,6 @@ printf "Creating a master samplewise-summary file for all samples\n"
 echo -e "sample\tmip\ttotal\tunique\tsaturation" > QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 printf "done\n"
-
-
-# printf "Creating a master mipwise-summary file across all samples\n"
-# echo -e "sample\tmip\ttotal\tunique\tsaturation" > $2.indexed.sort.collapse.samplewise_summary.txt
-# find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> $2.indexed.sort.collapse.samplewise_summary.txt
-# printf "done\n"
 
 
 printf "Multisample calling with HaplotypeCaller\n"

@@ -11,7 +11,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 
-my $headbin = '/labdata6/allabs/mips/pipeline_Shendure_v0.9.7';
+my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0';
 
 my ($samplesheet, $designfile, $mipbedfile, $readoverlapbp, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
 
@@ -86,12 +86,12 @@ if ($readoverlapbp >= 10) {
 
 # create a log file
 open (my $log_handle, ">", "$projectname.smMIPspipeline.log.txt") or die "Cannot write to smMIPspipeline.log.txt: $!.\n";
-print $log_handle "Scripts from MIPs analysis pipeline_Shendure_v0.9.7 created on ".scalar(localtime())."\n";
-print $log_handle "pipeline_Shendure_v0.9.7 uses version 0.7.8-r455 of BWA\n";
-print $log_handle "pipeline_Shendure_v0.9.7 uses version 3.1-1-g07a4bf8 of GATK\n";
-print $log_handle "pipeline_Shendure_v0.9.7 uses version 0.1.19-44428cd of samtools\n";
-print $log_handle "pipeline_Shendure_v0.9.7 uses version Version 4.07b of Tandem Repeats Finder\n";
-print $log_handle "pipeline_Shendure_v0.9.7 uses version 0.9.0 of pear\n";
+print $log_handle "Scripts from MIPs analysis pipeline_smMIPS_v1.0 created on ".scalar(localtime())."\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version 0.7.8-r455 of BWA\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version 3.1-1-g07a4bf8 of GATK\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version 0.1.19-44428cd of samtools\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version Version 4.07b of Tandem Repeats Finder\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version 0.9.0 of pear\n";
 close $log_handle;
 
 
@@ -122,11 +122,16 @@ close $output_handle;
 
 print "\n\n";
 
-print "If you would like edit the GATK settings used for calling/filtering, edit or uncomment/comment relevant parts of sub_GATK_HC_summarize.sh as desired\n";
-print "When finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
+print "NOTE!!!  This pipeline makes assumptions about the format of your data/MIP designs.  In particular, it assumes:\n";
+print "1) The data has already been demultiplexed\n";
+print "2) Data produced on Genetic Medicine/Pediatrics MiSeq\n";
+print "3) You are using a 5-bp molecular tag on the extension arm and 0-bp (no tag) on the ligation arm\n";
+print "4) Because the data was produced on a MiSeq, there are no readgroups\n";
+
+print "If some of these assumptions are not true, you will need to edit sub_prep_samples*.sh to make adjustments\nYou may have to run $headbin/MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh. When finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
 
 
-print "You can monitor the overall log of what you've been doing by viewing $projectname.MIPspipeline.log.txt\n.  You can also check the cluster job log files in the logs_queue directory\n\n";
+print "You can monitor the overall log of what you've been doing by viewing $projectname.MIPspipeline.log.txt\n.  Don't forget to check the cluster job log files in the logs_queue directory to make sure all commands completed successfully\n\n";
 
 
 
@@ -287,7 +292,7 @@ perl B<create_MIPs_analysis_files.pl> I<[options]>
 
 =item B<--readoverlapbp> F<integer>
 
-	desired read length to trim to (probably 76 to 110 bp)
+	number of bases overlapping between forward and reverse reads (if <10, pear cannot be used)
 
 =item B<--sequencer> F<HiSeqDorschner|HiSeqNickerson|MiSeq>
 
@@ -344,7 +349,7 @@ BED file with MIPs: merged BED file with final MIP regions for each gene; create
 
 perl create_MIPs_analysis_files.pl --samplesheet PIEZO2.samplekey.txt --designfile PIEZO2_allMIPs.designfile.txt --MIPbed PIEZO2_mips.bed --readoverlapbp 20 --email jxchong@uw.edu --projectname 2014-02-28-PIEZO2_analysis1
 
-Also see /labdata6/allabs/mips/pipeline_Shendure_v0.9.7/examples/
+Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.0/examples/
 
 
 =head1 AUTHOR

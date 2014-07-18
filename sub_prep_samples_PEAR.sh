@@ -25,21 +25,24 @@
 ## python setup.py build_ext --inplace
 
 # location of MIPGEN/tools script directory
-mipgentoolsbin='/labdata6/allabs/mips/pipeline_Shendure_v0.9.7/MIPGEN/tools'
+mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
 # location of executables
-executbin='/labdata6/allabs/mips/pipeline_Shendure_v0.9.7/executables'
+executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/executables'
 # directory to reference files (reference genome fasta and various indexes)
 refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
-
+# export PYTHONPATH=$HOME/dirWithScripts/:$PYTHONPATH
 
 ################### only necessary if using modules environment #######################
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
 module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7.8
 #######################################################################################
+export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools/
+#######################################################################################
 
 
 SAMPLENUM=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $1; exit }' $1)
 SAMPLENAME=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $2; exit }' $1)
+
 
 set -e
 set -o pipefail
