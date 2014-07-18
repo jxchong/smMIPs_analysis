@@ -75,11 +75,11 @@ my $samplekey = makeSampleKey($samplesheet);
 # PEAR doesn't work unless there is at least 10bp of overlap between forward and reverse reads
 # copy all the relevant Bash, queue submission scripts to current directory
 if ($readoverlapbp >= 10) {
-	`cp $headbin/sub_*.sh .`;
+	`cp $headbin/smMIPs_analysis/sub_*.sh .`;
 	`rm sub_prep_samples_noPEAR.sh`;
 } elsif ($readoverlapbp < 10) {
 	# specific pipeline not written yet since Bamshad lab doesn't use v3 kits
-	`cp $headbin/sub_*.sh .`;
+	`cp $headbin/smMIPs_analysis/sub_*.sh .`;
 	`rm sub_prep_samples_PEAR.sh`;
 }
 
@@ -98,7 +98,7 @@ close $log_handle;
 
 # edit run_MIP_analysis.sh and insert input values
 open (my $output_handle, ">", "run_MIP_analysis.sh") or die "Cannot write to run_MIP_analysis.sh: $!.\n";
-open (my $input_handle, "$headbin/run_MIP_analysis.sh") or die "Cannot read $headbin/run_MIP_analysis.sh: $!.\n";
+open (my $input_handle, "$headbin/smMIPs_analysis/run_MIP_analysis.sh") or die "Cannot read $headbin/smMIPs_analysis/run_MIP_analysis.sh: $!.\n";
 while ( <$input_handle> ) {
 	my $line = $_;
 	$line =~ s/ \$1/ $samplekey/g;					# 1 = filename of sample key (2+ columns, see below)

@@ -24,13 +24,15 @@
 # NOTE: if MIPGEN/tools was built on a different system/using a different version of Python, may need to run this once:
 ## python setup.py build_ext --inplace
 
+# location of Pediatrics analysis pipeline bin
+pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0'
 # location of MIPGEN/tools script directory
 mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
 # location of executables
 executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/executables'
 # directory to reference files (reference genome fasta and various indexes)
 refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
-# export PYTHONPATH=$HOME/dirWithScripts/:$PYTHONPATH
+
 
 ################### only necessary if using modules environment #######################
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
@@ -65,7 +67,7 @@ printf "done\n"
 
 
 printf "Aligning with BWA\n"
-bwa mem -R "@RG\tID:${SAMPLENAME}_RG\tSM:${SAMPLENAME}" $refdir/Homo_sapiens_assembly19.fasta ${SAMPLENAME}.indexed.fq > ${SAMPLENAME}.indexed.sam
+$executbin/bwa mem -R "@RG\tID:${SAMPLENAME}_RG\tSM:${SAMPLENAME}" $refdir/Homo_sapiens_assembly19.fasta ${SAMPLENAME}.indexed.fq > ${SAMPLENAME}.indexed.sam
 printf "done\n"
 
 

@@ -22,9 +22,15 @@
 # $4 = your email address
 # $5 = group to assign permissions to
 
+# location of Pediatrics analysis pipeline bin
+pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0'
+# location of MIPGEN/tools script directory
 mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
+# location of executables
 executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/executables'
+# directory to reference files (reference genome fasta and various indexes)
 refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
+
 
 
 
@@ -53,7 +59,7 @@ printf "done\n"
 
 
 printf "Creating a mater mipwise complexity file\n"
-python calc_complexity_demultiplexed.py --samplekey $1 --projectname $2
+python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname $2
 printf "done\n"
 
 
@@ -64,7 +70,7 @@ printf "done\n"
 
 
 printf "Multisample calling with HaplotypeCaller\n"
-java -jar /cm/shared/apps/GATK/GenomeAnalysisTK.jar \
+java -jar $executbin/GenomeAnalysisTK.jar \
 -T HaplotypeCaller \
 -R $refdir/Homo_sapiens_assembly19.fasta \
 -L $3 \
