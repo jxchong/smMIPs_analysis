@@ -72,12 +72,15 @@ print "\n\n";
 my $samplekey = makeSampleKey($samplesheet);
 
 
-# copy all the relevant Bash, queue submission scripts to current directory.
+# PEAR doesn't work unless there is at least 10bp of overlap between forward and reverse reads
+# copy all the relevant Bash, queue submission scripts to current directory
 if ($readoverlapbp >= 10) {
 	`cp $headbin/sub_*.sh .`;
+	`rm sub_prep_samples_noPEAR.sh`;
 } elsif ($readoverlapbp < 10) {
 	# specific pipeline not written yet since Bamshad lab doesn't use v3 kits
 	`cp $headbin/sub_*.sh .`;
+	`rm sub_prep_samples_PEAR.sh`;
 }
 
 
@@ -105,6 +108,11 @@ while ( <$input_handle> ) {
 	$line =~ s/ \$5/ $email/g;						# 5 = your email address
 	$line =~ s/ \$6/ $projectname/g;				# 6 = an identifying name for this project (e.g. "2013-01-01-My_MIPS_Project")
 	$line =~ s/ \$7/ $sequencer/g;					# 7 = the sequencer used to generate the fastqs (MiSeq or HiSeq)
+	if ($readoverlapbp >= 10) {
+		$line =~ s/sub_prep_samples\.sh/sub_prep_samples_PEAR.sh/;
+	} elsif ($readoverlapbp < 10) {
+		$line =~ s/sub_prep_samples\.sh/sub_prep_samples_noPEAR.sh/;
+	}
 	print $output_handle "$line";
 }
 close $input_handle;

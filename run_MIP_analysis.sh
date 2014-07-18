@@ -50,6 +50,7 @@ dos2unix $3
 mac2unix $2
 mac2unix $3
 
+
 # making sure bed file doesn't contain "chr" in the chromosome number column
 sed -i "s/^chr//" $3
 
@@ -63,10 +64,9 @@ bash -c '[ -d logs_queue ] || mkdir logs_queue'
 bash -c '[ -d logs_queue/prep_samples ] || mkdir logs_queue/prep_samples' 
 # bash -c '[ -d logs_queue/UnifiedGenotyper ] || mkdir logs_queue/UnifiedGenotyper'
 # bash -c '[ -d logs_queue/SeattleSeq ] || mkdir logs_queue/SeattleSeq'
-bash -c '[ -d logs_queue/DOCperMIP ] || mkdir logs_queue/DOCperMIP'
 bash -c '[ -d multisample_calls ] || mkdir multisample_calls'
 # bash -c '[ -d singlesample_calls ] || mkdir singlesample_calls'
-bash -c '[ -d DOCperMIP ] || mkdir DOCperMIP'
+bash -c '[ -d QC_data ] || mkdir QC_data'
 
 
 # if HiSeq, then rename files so that the index (barcode) aka read2 file is s_1_3 and the original s_1_3 file which contains the reverse reads is renamed to read2
@@ -94,19 +94,6 @@ qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_prep_samples.sh $1 $2
 # eventually will submit to VEP as well
 # uses Evan's script to generate capture events summary files
 qsub -M $5 sub_GATK_HC_summarize.sh $1 $6 $3 $5
-
-
-# # step 3)
-# # Generate file with average coverage per MIP
-# # make bam list
-# # Run GATK Depth of Coverage
-# qsub -M $5 sub_summary_data.sh $2 $6 $3
-# # step 6b) generate DOC for each 112-bp MIP target interval
-# qsub -t 1-`wc -l MIPtargets112bp.GATKDepthOfCoverage.intervals | cut -f1 -d' '`:1 -M $5 sub_DOC_MIPtargets.sh $6
-# # step 6c) combine DOC for each 112-bp MIP target interval into one master file and add MIP names
-# qsub -M $5 sub_combine_DOC_MIPtargets.sh $2 $6
-
-
 
 
 

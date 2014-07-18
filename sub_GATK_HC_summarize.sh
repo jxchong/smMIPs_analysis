@@ -46,14 +46,14 @@ printf "done\n"
 
 
 printf "Creating a master complexity file for all samples\n"
-echo -e "sample\tmip\ttotal\tunique" > $2.indexed.sort.collapse.complexity.txt
-find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> $2.indexed.sort.collapse.complexity.txt
+echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.indexed.sort.collapse.complexity.txt
+find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
 printf "Creating a master samplewise-summary file for all samples\n"
-echo -e "sample\tmip\ttotal\tunique\tsaturation" > $2.indexed.sort.collapse.samplewise_summary.txt
-find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> $2.indexed.sort.collapse.samplewise_summary.txt
+echo -e "sample\tmip\ttotal\tunique\tsaturation" > QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
+find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 printf "done\n"
 
 
@@ -72,27 +72,28 @@ java -jar /cm/shared/apps/GATK/GenomeAnalysisTK.jar \
 --filter_bases_not_stored \
 -rf BadCigar \
 -allowPotentiallyMisencodedQuals \
--o $2.multisample.vcf
+-o multisample_calls/$2.multisample.vcf
 printf "done\n"
 
 
 printf "Submitting multisample vcf to SeattleSeq138\n"
 # this will put SeattleSeq annotations in separate tab-delimited file
 java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
--i $2.multisample.vcf \
--o $2.multisample.SS138.tsv \
+-i multisample_calls/$2.multisample.vcf \
+-o multisample_calls/$2.multisample.SS138.tsv \
 -m $4
 printf "done\n"
 
 
 printf "Submitting multisample vcf to VEP\n"
-# this will put SeattleSeq annotations in separate tab-delimited file
+# this will insert VEP annotations into the vcf file for later importing into Gemini
+### you can also easily use vcftools or bcftools to parse this out into a tab-delimited format, e.g.
+### ~/bin/bcftools query -H --f '%CHROM\t%POS\t%REF\t%ALT\t%TYPE\t%ID\t%FILTER\t%INFO/VEPNAME[\t%TGT]\n'
 # java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
-# -i $2.multisample.vcf \
-# -o $2.multisample.SS138.tsv \
+# -i multisample_calls/$2.multisample.vcf \
+# -o multisample_calls/$2.multisample.SS138.tsv \
 # -m $4
 printf "done\n"
-
 
 
 # clean up all the original fastq.gz files
