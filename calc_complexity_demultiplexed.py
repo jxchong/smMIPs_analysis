@@ -50,7 +50,7 @@ samplekey_fh.close()
 # output complexity info
 complexity_outfile = options.projectname + '.indexed.sort.collapse.complexity.txt'
 with open(complexity_outfile, 'w') as output_fh:
-	output_fh.write('sample\tmip\ttotal\unique\tsaturation\n')
+	output_fh.write('sample\tmip\ttotal\tunique\tsaturation\n')
 	output_mip_complexity(complexity_by_position, output_fh)
 output_fh.close()
 
