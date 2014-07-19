@@ -20,7 +20,7 @@
 # $2 = project name
 # $3 = MIP bed file
 # $4 = your email address
-# $5 = group to assign permissions to
+# $5 = MIP design file
 
 # location of Pediatrics analysis pipeline bin
 pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0'
@@ -53,13 +53,13 @@ printf "done\n"
 
 
 printf "Creating a master complexity file for all samples for all mips\n"
-echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.allsamples.indexed.sort.collapse.complexity.txt
-find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamples.indexed.sort.collapse.complexity.txt
+echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
+find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
 printf "Creating a mater mipwise complexity file\n"
-python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname $2
+python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname QC_data/$2
 printf "done\n"
 
 
@@ -67,6 +67,12 @@ printf "Creating a master samplewise-summary file for all samples\n"
 echo -e "sample\tmip\ttotal\tunique\tsaturation" > QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 printf "done\n"
+
+
+printf "Adding Concatenated_name to QC files\n"
+perl $pipelinebin/add_concatname_complexity.pl --designfile $5 --projectname QC_data/$2
+printf "done\n"
+
 
 
 printf "Multisample calling with HaplotypeCaller\n"

@@ -121,14 +121,15 @@ close $output_handle;
 
 
 print "\n\n";
-
-print "NOTE!!!  This pipeline makes assumptions about the format of your data/MIP designs.  In particular, it assumes:\n";
+print "#################### NOTE TO USERS ####################\n";
+print "This pipeline makes assumptions about the format of your data/MIP designs.  In particular, it assumes:\n";
 print "1) The data has already been demultiplexed\n";
 print "2) Data produced on Genetic Medicine/Pediatrics MiSeq\n";
 print "3) You are using a 5-bp molecular tag on the extension arm and 0-bp (no tag) on the ligation arm\n";
-print "4) Because the data was produced on a MiSeq, there are no readgroups\n";
+print "4) Because the data was produced on a MiSeq, there are no readgroups\n\n";
 
-print "If some of these assumptions are not true, you will need to edit sub_prep_samples*.sh to make adjustments\nYou may have to run $headbin/MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh. When finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
+print "If some of these assumptions are not true, you will need to edit sub_prep_samples*.sh to make adjustments.\n";
+print "You may have to run $headbin/MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh. When finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
 
 
 print "You can monitor the overall log of what you've been doing by viewing $projectname.MIPspipeline.log.txt\n.  Don't forget to check the cluster job log files in the logs_queue directory to make sure all commands completed successfully\n\n";
@@ -166,8 +167,8 @@ sub validateInputs {
 		$inputcheck = "--designfile $designfile is missing a column named 'lig_probe_start'\n";
 	} elsif (!defined ${$designheadvals}{'ext_probe_start'}) {
 		$inputcheck = "--designfile $designfile is missing a column named 'ext_probe_start'\n";
-	} elsif (!defined ${$designheadvals}{'Concatenated_name'} && !defined ${$designheadvals}{'mip_name'}) {
-		$inputcheck = "--designfile $designfile is missing a column named 'Concatenated_name' or 'mip_name'\n";
+	} elsif (!defined ${$designheadvals}{'Concatenated_name'} && !defined ${$designheadvals}{'mip_name'} && !defined ${$designheadvals}{'mip_key'}) {
+		$inputcheck = "--designfile $designfile is missing a column named 'Concatenated_name' or 'mip_name' or 'mip_key'\n";
 	}
 
 	system("dos2unix $mipbedfile");
@@ -284,7 +285,7 @@ perl B<create_MIPs_analysis_files.pl> I<[options]>
 
 =item B<--designfile> F<design file>
 
-	path to MIP design file
+	path to MIP design file; if the design file contains a column "Concatenated_name," then the QC complexity files will have an extra column added with the contents of that column matched to the official mip_name/mipkey value
 
 =item B<--MIPbed> F<bed file>
 
@@ -328,13 +329,11 @@ Sample sheet: the Sample Sheet used by the MiSeq for this run (includes barcodes
  2,1787_FS,C:\Illumina\MiSeq Reporter\Genomes\Homo_sapiens\UCSC\hg19\Sequence\Chromosomes,TCCGAGAA
 
 
-MIP design file: final output created by design pipeline (The header of this file begins with >mip_pick_count)
-NOTE: Should have a column named Concatenated_name containing the name for each MIP
+MIP design file: final output created by MIPGEN v1.0 design pipeline (The header of this file begins with >mip_key)
 
- >mip_pick_count	gene	region covered	rank_score	chr	ext_probe_start [...]
- 1	CD101	UTR_5'_Ex1	5	1	117544332
- 2	CD101	Ex1	5	1	117544573
- 3	CD101	Ex2	5	1	117552442
+>mip_key	svr_score	chr	ext_probe_start
+13:101707601-101707762/19,26/+	2.21146	13	101707601
+13:101707700-101707861/16,29/-	2.28919	13	101707846
 
 
 BED file with MIPs: merged BED file with final MIP regions for each gene; created in design pipeline
