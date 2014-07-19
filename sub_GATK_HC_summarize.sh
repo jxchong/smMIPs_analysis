@@ -54,7 +54,7 @@ printf "done\n"
 
 printf "Creating a master complexity file for all samples for all mips\n"
 echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
-find */* -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
+find */* ! -path "QC_data/*" -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
@@ -65,7 +65,7 @@ printf "done\n"
 
 printf "Creating a master samplewise-summary file for all samples\n"
 echo -e "sample\tmip\ttotal\tunique\tsaturation" > QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
-find */* -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
+find */* ! -path "QC_data/*" -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
 printf "done\n"
 
 

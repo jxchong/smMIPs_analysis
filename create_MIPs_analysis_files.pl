@@ -88,7 +88,7 @@ if ($readoverlapbp >= 10) {
 open (my $log_handle, ">", "$projectname.smMIPspipeline.log.txt") or die "Cannot write to smMIPspipeline.log.txt: $!.\n";
 print $log_handle "Scripts from MIPs analysis pipeline_smMIPS_v1.0 created on ".scalar(localtime())."\n";
 print $log_handle "pipeline_smMIPS_v1.0 uses version 0.7.8-r455 of BWA\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version 3.1-1-g07a4bf8 of GATK\n";
+print $log_handle "pipeline_smMIPS_v1.0 uses version 3.2-2-gec30cee of GATK\n";
 print $log_handle "pipeline_smMIPS_v1.0 uses version 0.1.19-44428cd of samtools\n";
 print $log_handle "pipeline_smMIPS_v1.0 uses version Version 4.07b of Tandem Repeats Finder\n";
 print $log_handle "pipeline_smMIPS_v1.0 uses version 0.9.0 of pear\n";
