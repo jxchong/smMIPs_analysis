@@ -89,11 +89,6 @@ printf "done\n"
 
 
 # make a bgzip compressed version of the vcfs
-<<<<<<< HEAD:sub_GATK_HC.sh
 $executbin/bgzip -c multisample_calls/$2.HC.multisample.vcf > multisample_calls/$2.HC.multisample.vcf.gz
 $executbin/tabix -p vcf multisample_calls/$2.HC.multisample.vcf.gz
-=======
-$nodebin/executables/bgzip -c multisample_calls/$2.HC.multisample.vcf > multisample_calls/$2.HC.multisample.vcf.gz
-$nodebin/executables/tabix -p vcf multisample_calls/$2.HC.multisample.vcf.gz
->>>>>>> c9d7c30ddbe9e0e6aa92f2d6936ffa8107c17771:sub_GATK_HC.sh
 
