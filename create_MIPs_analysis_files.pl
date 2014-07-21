@@ -129,7 +129,7 @@ print "3) You are using a 5-bp molecular tag on the extension arm and 0-bp (no t
 print "4) Because the data was produced on a MiSeq, there are no readgroups\n\n";
 
 print "If some of these assumptions are not true, you will need to edit sub_prep_samples*.sh to make adjustments.\n";
-print "You may have to run $headbin/MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh. When finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
+print "You may have to run $headbin/MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh.\nWhen finished, begin the analysis with:\nbash run_MIP_analysis.sh\n\n";
 
 
 print "You can monitor the overall log of what you've been doing by viewing $projectname.MIPspipeline.log.txt\n.  Don't forget to check the cluster job log files in the logs_queue directory to make sure all commands completed successfully\n\n";

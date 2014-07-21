@@ -8,8 +8,8 @@
 #$ -o logs_queue
 #$ -e logs_queue
 
-#$ -N GATK_HC_summarize
-#$ -hold_jid smMIP_prep_samples
+#$ -N GATK_HC
+#$ -hold_jid calccomplexity
 
 # arguments should be:
 # $1 = sample ID key text file for all samples
@@ -47,33 +47,6 @@ set -e
 set -o pipefail
 
 
-printf "Making list of all bam files for this samplesheet\n"
-find */* -name "*.indexed.sort.collapse.all_reads.unique.sort.bam" > bam.list
-printf "done\n"
-
-
-printf "Creating a master complexity file for all samples for all mips\n"
-echo -e "sample\tmip\ttotal\tunique" > QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
-find */* ! -path "QC_data/*" -name "*.indexed.sort.collapse.complexity.txt" -exec tail -n +2 {} \; >> QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
-printf "done\n"
-
-
-printf "Creating a mater mipwise complexity file\n"
-python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname QC_data/$2
-printf "done\n"
-
-
-printf "Creating a master samplewise-summary file for all samples\n"
-echo -e "sample\tmip\ttotal\tunique\tsaturation" > QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
-find */* ! -path "QC_data/*" -name "*.indexed.sort.collapse.samplewise_summary.txt" -exec tail -n +2 {} \; >> QC_data/$2.indexed.sort.collapse.samplewise_summary.txt
-printf "done\n"
-
-
-printf "Adding Concatenated_name to QC files\n"
-perl $pipelinebin/add_concatname_complexity.pl --designfile $5 --projectname QC_data/$2
-printf "done\n"
-
-
 
 printf "Multisample calling with HaplotypeCaller\n"
 java -jar $executbin/GenomeAnalysisTK.jar \
@@ -84,15 +57,15 @@ java -jar $executbin/GenomeAnalysisTK.jar \
 --filter_bases_not_stored \
 -rf BadCigar \
 -allowPotentiallyMisencodedQuals \
--o multisample_calls/$2.multisample.vcf
+-o multisample_calls/$2.HC.multisample.vcf
 printf "done\n"
 
 
 printf "Submitting multisample vcf to SeattleSeq138\n"
 # this will put SeattleSeq annotations in separate tab-delimited file
 java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
--i multisample_calls/$2.multisample.vcf \
--o multisample_calls/$2.multisample.SS138.tsv \
+-i multisample_calls/$2.HC.multisample.vcf \
+-o multisample_calls/$2.HC.multisample.SS138.tsv \
 -m $4
 printf "done\n"
 
@@ -102,8 +75,8 @@ printf "Submitting multisample vcf to VEP\n"
 ### you can also easily use vcftools or bcftools to parse this out into a tab-delimited format, e.g.
 ### ~/bin/bcftools query -H --f '%CHROM\t%POS\t%REF\t%ALT\t%TYPE\t%ID\t%FILTER\t%INFO/VEPNAME[\t%TGT]\n'
 # java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
-# -i multisample_calls/$2.multisample.vcf \
-# -o multisample_calls/$2.multisample.SS138.tsv \
+# -i multisample_calls/$2.HC.multisample.vcf \
+# -o multisample_calls/$2.HC.multisample.SS138.tsv \
 # -m $4
 printf "done\n"
 
@@ -114,4 +87,8 @@ bash -c '[ -d raw_data ] || mkdir raw_data'
 bash -c '[ -d raw_data ] && mv *fastq.gz raw_data/.'
 printf "done\n"
 
+
+# make a bgzip compressed version of the vcfs
+$executbin/bgzip -c multisample_calls/$2.HC.multisample.vcf > multisample_calls/$2.HC.multisample.vcf.gz
+$executbin/tabix -p vcf multisample_calls/$2.HC.multisample.vcf.gz
 

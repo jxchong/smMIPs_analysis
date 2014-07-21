@@ -41,13 +41,18 @@ module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7
 export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools/
 #######################################################################################
 
+set -e
+set -o pipefail
 
 SAMPLENUM=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $1; exit }' $1)
 SAMPLENAME=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $2; exit }' $1)
 
 
-set -e
-set -o pipefail
+NOW=$(date +"%c")
+if (( $SGE_TASK_ID == 1 )); then
+	printf "Running step 1, smMIP_prep_samples job: $NOW\n" >> $2.MIPspipeline.log.txt
+fi
+
 
 printf "Unzipping fastqs for sample ${SAMPLENAME} (sample # ${SAMPLENUM}) for combining with PEAR\n"
 zcat "${SAMPLENAME}_S${SAMPLENUM}_L001_R1_001.fastq.gz" > "${SAMPLENAME}_S${SAMPLENUM}.R1.fastq"
