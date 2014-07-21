@@ -62,7 +62,7 @@ find -type f -iname '*Undetermined*.fastq*' -exec rm -f {} \;
 # make directories to store logs
 bash -c '[ -d logs_queue ] || mkdir logs_queue' 
 bash -c '[ -d logs_queue/prep_samples ] || mkdir logs_queue/prep_samples' 
-# bash -c '[ -d logs_queue/UnifiedGenotyper ] || mkdir logs_queue/UnifiedGenotyper'
+bash -c '[ -d logs_queue/UnifiedGenotyper ] || mkdir logs_queue/UnifiedGenotyper'
 # bash -c '[ -d logs_queue/SeattleSeq ] || mkdir logs_queue/SeattleSeq'
 bash -c '[ -d multisample_calls ] || mkdir multisample_calls'
 # bash -c '[ -d singlesample_calls ] || mkdir singlesample_calls'
@@ -88,18 +88,32 @@ bash -c '[ -d QC_data ] || mkdir QC_data'
 qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_prep_samples.sh $1 $2
 
 
-
 # step 2)
-# multi-sample calling, also submits to SeattleSeq and produces a tab-delimited file with annotations
+# use Evan's script to generate capture events summary files (complexity files)
+qsub -M $5 sub_calccomplexity.sh $1 $6 $2
+
+
+# step 3a)
+# multi-sample calling with HaplotypeCaller
+# annotation: SeattleSeq138 to produce a tab-delimited file with annotations
 # eventually will submit to VEP as well
 # uses Evan's script to generate capture events summary files
-qsub -M $5 sub_GATK_HC_summarize.sh $1 $6 $3 $5
+qsub -M $5 sub_GATK_HC.sh $1 $6 $3 $5
 
+
+# step 3b)
+# indel realignment
+# multi-sample calling with Unified Genotyper
+# annotation: SeattleSeq138 to produce a tab-delimited file with annotations
+# eventually will submit to VEP as well
+qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_indelrealign.sh $1 $6 $3
+qsub -M $5 sub_GATK_UG.sh $1 $6 $5
 
 
 
 
 
 NOW=$(date +"%c")
+printf "###########################################\n" >> $6.MIPspipeline.log.txt
 printf "Submitted analysis jobs: $NOW\n" >> $6.MIPspipeline.log.txt
 

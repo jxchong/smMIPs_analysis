@@ -8,7 +8,7 @@
 #$ -o logs_queue
 #$ -e logs_queue
 
-#$ -N GATK_HC_summarize
+#$ -N calccomplexity
 #$ -hold_jid smMIP_prep_samples
 
 # arguments should be:
@@ -18,9 +18,7 @@
 	# 2nd column: sample name
 	# 3rd column optional
 # $2 = project name
-# $3 = MIP bed file
-# $4 = your email address
-# $5 = MIP design file
+# $3 = MIP design file
 
 # location of Pediatrics analysis pipeline bin
 pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0'
@@ -47,6 +45,12 @@ set -e
 set -o pipefail
 
 
+NOW=$(date +"%c")
+if (( $SGE_TASK_ID == 1 )); then
+	printf "Running step 2, calccomplexity job: $NOW\n" >> $2.MIPspipeline.log.txt
+fi
+
+
 printf "Making list of all bam files for this samplesheet\n"
 find */* -name "*.indexed.sort.collapse.all_reads.unique.sort.bam" > bam.list
 printf "done\n"
@@ -70,48 +74,7 @@ printf "done\n"
 
 
 printf "Adding Concatenated_name to QC files\n"
-perl $pipelinebin/add_concatname_complexity.pl --designfile $5 --projectname QC_data/$2
-printf "done\n"
-
-
-
-printf "Multisample calling with HaplotypeCaller\n"
-java -jar $executbin/GenomeAnalysisTK.jar \
--T HaplotypeCaller \
--R $refdir/Homo_sapiens_assembly19.fasta \
--L $3 \
--I bam.list \
---filter_bases_not_stored \
--rf BadCigar \
--allowPotentiallyMisencodedQuals \
--o multisample_calls/$2.multisample.vcf
-printf "done\n"
-
-
-printf "Submitting multisample vcf to SeattleSeq138\n"
-# this will put SeattleSeq annotations in separate tab-delimited file
-java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
--i multisample_calls/$2.multisample.vcf \
--o multisample_calls/$2.multisample.SS138.tsv \
--m $4
-printf "done\n"
-
-
-printf "Submitting multisample vcf to VEP\n"
-# this will insert VEP annotations into the vcf file for later importing into Gemini
-### you can also easily use vcftools or bcftools to parse this out into a tab-delimited format, e.g.
-### ~/bin/bcftools query -H --f '%CHROM\t%POS\t%REF\t%ALT\t%TYPE\t%ID\t%FILTER\t%INFO/VEPNAME[\t%TGT]\n'
-# java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
-# -i multisample_calls/$2.multisample.vcf \
-# -o multisample_calls/$2.multisample.SS138.tsv \
-# -m $4
-printf "done\n"
-
-
-# clean up all the original fastq.gz files
-printf "Making raw_combined_reads directory and cleaning up files..."
-bash -c '[ -d raw_data ] || mkdir raw_data' 
-bash -c '[ -d raw_data ] && mv *fastq.gz raw_data/.'
+perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --projectname QC_data/$2
 printf "done\n"
 
 
