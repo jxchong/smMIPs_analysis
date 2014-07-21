@@ -54,8 +54,10 @@ java -Xmx32g -jar $executbin/GenomeAnalysisTK.jar \
 -R $refdir/Homo_sapiens_assembly19.fasta \
 -T UnifiedGenotyper \
 -L MIPtargets.intervals \
+-rf BadCigar \
+-allowPotentiallyMisencodedQuals \
 -I bam.realigned.list \
--o $2.multisample.realigned.polymorphic.raw.snv.indel.vcf \
+-o multisample_calls/$2.multisample.realigned.polymorphic.raw.snv.indel.vcf \
 -nt 8 \
 -nct 4 \
 -dcov 5000 \
@@ -74,7 +76,9 @@ printf "Add GATK filter flags for multisample calling..."
 java -Xmx8g -jar $executbin/GenomeAnalysisTK.jar \
 -T VariantFiltration \
 -R $refdir/Homo_sapiens_assembly19.fasta \
--V $2.multisample.realigned.polymorphic.raw.snv.indel.vcf \
+-rf BadCigar \
+-allowPotentiallyMisencodedQuals \
+-V multisample_calls/$2.multisample.realigned.polymorphic.raw.snv.indel.vcf \
 -o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf \
 -window 20 \
 -cluster 5 \
@@ -85,9 +89,7 @@ java -Xmx8g -jar $executbin/GenomeAnalysisTK.jar \
 -filterName QUALFilter \
 -filter "QUAL < 30.0" \
 -filterName LowCoverage \
--filter "DP < 5" \
--filterName HRunFilter \
--filter "HRun > 4.0" 
+-filter "DP < 5"
 printf "done\n"
 
 

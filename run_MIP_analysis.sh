@@ -102,6 +102,8 @@ qsub -M $5 sub_GATK_HC.sh $1 $6 $3 $5
 
 
 # step 3b)
+# make MIPtargets.interval (GATK interval file)
+perl -anF'\t' -e '$F[0] =~ s/chr//; print "$F[0]:$F[1]-$F[2]\n";' $3 > MIPtargets.intervals
 # indel realignment
 # multi-sample calling with Unified Genotyper
 # annotation: SeattleSeq138 to produce a tab-delimited file with annotations

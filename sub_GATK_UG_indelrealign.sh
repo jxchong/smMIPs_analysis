@@ -49,18 +49,15 @@ SAMPLENUM=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $1; exit }' $1)
 SAMPLENAME=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $2; exit }' $1)
 
 
-# make MIPtargets.interval (GATK interval file)
-printf "Making MIP interval file..."
-perl -anF'\t' -e '$F[0] =~ s/chr//; print "$F[0]:$F[1]-$F[2]\n";' $3 > MIPtargets.intervals
-printf "done\n"
-
 
 # create target for indel realignment
 printf "Create indel realignment interval file for ${SAMPLENAME}..."
 java -d64 -Xmx88g \
--jar $executbin/executables/GenomeAnalysisTK.jar \
+-jar $executbin/GenomeAnalysisTK.jar \
 -T RealignerTargetCreator \
 -R $refdir/Homo_sapiens_assembly19.fasta \
+-rf BadCigar \
+-allowPotentiallyMisencodedQuals \
 -L MIPtargets.intervals \
 -I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam \
 -o ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.IndelRealigner.intervals \
@@ -72,14 +69,16 @@ printf "done\n"
 
 # do indel realignment
 printf "Do indel realignment for ${SAMPLENAME}..."
-java -d64 -Xmx80g -jar $executbin/executables/GenomeAnalysisTK.jar \
+java -d64 -Xmx80g -jar $executbin/GenomeAnalysisTK.jar \
 -T IndelRealigner \
 -L MIPtargets.intervals \
 -R $refdir/Homo_sapiens_assembly19.fasta \
--I ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam \
--targetIntervals ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.IndelRealigner.intervals \
+-rf BadCigar \
+-allowPotentiallyMisencodedQuals \
+-I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam \
+-targetIntervals ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.IndelRealigner.intervals \
 -dcov 5000 \
--o ${SAMPLENAME}.realigned.bam
+-o ${SAMPLENAME}/${SAMPLENAME}.realigned.bam
 printf "done\n"
 
 
