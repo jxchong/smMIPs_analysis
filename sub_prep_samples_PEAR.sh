@@ -25,7 +25,7 @@
 ## python setup.py build_ext --inplace
 
 # location of Pediatrics analysis pipeline bin
-pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0'
+pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/smMIPs_analysis'
 # location of MIPGEN/tools script directory
 mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
 # location of executables

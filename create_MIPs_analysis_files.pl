@@ -11,7 +11,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 
-my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0';
+my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0/smMIPs_analysis';
 
 my ($samplesheet, $designfile, $mipbedfile, $readoverlapbp, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
 
@@ -75,11 +75,11 @@ my $samplekey = makeSampleKey($samplesheet);
 # PEAR doesn't work unless there is at least 10bp of overlap between forward and reverse reads
 # copy all the relevant Bash, queue submission scripts to current directory
 if ($readoverlapbp >= 10) {
-	`cp $headbin/smMIPs_analysis/sub_*.sh .`;
-	`rm sub_prep_samples_noPEAR.sh`;
+	`cp $headbin/sub_*.sh .`;
+	# `rm sub_prep_samples_noPEAR.sh`;
 } elsif ($readoverlapbp < 10) {
 	# specific pipeline not written yet since Bamshad lab doesn't use v3 kits
-	`cp $headbin/smMIPs_analysis/sub_*.sh .`;
+	`cp $headbin/sub_*.sh .`;
 	`rm sub_prep_samples_PEAR.sh`;
 }
 
@@ -98,7 +98,7 @@ close $log_handle;
 
 # edit run_MIP_analysis.sh and insert input values
 open (my $output_handle, ">", "run_MIP_analysis.sh") or die "Cannot write to run_MIP_analysis.sh: $!.\n";
-open (my $input_handle, "$headbin/smMIPs_analysis/run_MIP_analysis.sh") or die "Cannot read $headbin/smMIPs_analysis/run_MIP_analysis.sh: $!.\n";
+open (my $input_handle, "$headbin/run_MIP_analysis.sh") or die "Cannot read $headbin/run_MIP_analysis.sh: $!.\n";
 while ( <$input_handle> ) {
 	my $line = $_;
 	$line =~ s/ \$1/ $samplekey/g;					# 1 = filename of sample key (2+ columns, see below)
@@ -266,7 +266,7 @@ sub makeSampleKey {
 =head1 NAME
 
 
-create_MIPs_analysis_files.pl - Script to copy over current version of MIPs analysis pipeline files and make some input files.  This script should be run while you are on the head node.
+create_MIPs_analysis_files.pl - Script to copy over current version of MIPs analysis pipeline files and make some input files.  
 
 
 =head1 SYNOPSIS
@@ -332,8 +332,8 @@ Sample sheet: the Sample Sheet used by the MiSeq for this run (includes barcodes
 MIP design file: final output created by MIPGEN v1.0 design pipeline (The header of this file begins with >mip_key)
 
 >mip_key	svr_score	chr	ext_probe_start
-13:101707601-101707762/19,26/+	2.21146	13	101707601
-13:101707700-101707861/16,29/-	2.28919	13	101707846
+9:101707601-101707762/19,26/+	2.21146	13	101707601
+9:101707700-101707861/16,29/-	2.28919	13	101707846
 
 
 BED file with MIPs: merged BED file with final MIP regions for each gene; created in design pipeline
@@ -342,11 +342,16 @@ BED file with MIPs: merged BED file with final MIP regions for each gene; create
  chr1	117552461	117552862	NM_004258_exon_1_10_chr1_117552472_f	+
  chr1	117554161	117554598	NM_004258_exon_2_10_chr1_117554172_f	+
 
+ or
+
+ 1	117544361	117544492	NM_004258_exon_0_10_chr1_117544372_f	+
+ 1	117552461	117552862	NM_004258_exon_1_10_chr1_117552472_f	+
+ 1	117554161	117554598	NM_004258_exon_2_10_chr1_117554172_f	+
 
 =head1 EXAMPLES
 
 
-perl create_MIPs_analysis_files.pl --samplesheet PIEZO2.samplekey.txt --designfile PIEZO2_allMIPs.designfile.txt --MIPbed PIEZO2_mips.bed --readoverlapbp 20 --email jxchong@uw.edu --projectname 2014-02-28-PIEZO2_analysis1
+perl create_MIPs_analysis_files.pl --samplesheet SampleSheet --designfile MYGENE_allMIPs.designfile.txt --MIPbed MYGENE_mips.bed --readoverlapbp 20 --email jxchong@uw.edu --projectname 2014-02-28-MYGENE_analysis1
 
 Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.0/examples/
 
