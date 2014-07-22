@@ -116,6 +116,6 @@ qsub -M $5 sub_GATK_UG.sh $1 $6 $5
 
 
 NOW=$(date +"%c")
-printf "###########################################\n" >> $6.MIPspipeline.log.txt
-printf "Submitted analysis jobs: $NOW\n" >> $6.MIPspipeline.log.txt
+printf "###########################################\n" >> $6.smMIPspipeline.log.txt
+printf "Submitted analysis jobs: $NOW\n" >> $6.smMIPspipeline.log.txt
 

@@ -50,7 +50,7 @@ SAMPLENAME=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $2; exit }' $1)
 
 NOW=$(date +"%c")
 if (( $SGE_TASK_ID == 1 )); then
-	printf "Running step 1, smMIP_prep_samples job: $NOW\n" >> $2.MIPspipeline.log.txt
+	printf "Running step 1, smMIP_prep_samples job: $NOW\n" >> $2.smMIPspipeline.log.txt
 fi
 
 

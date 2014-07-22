@@ -46,9 +46,7 @@ set -o pipefail
 
 
 NOW=$(date +"%c")
-if (( $SGE_TASK_ID == 1 )); then
-	printf "Running step 2, calccomplexity job: $NOW\n" >> $2.MIPspipeline.log.txt
-fi
+printf "Running step 2, calccomplexity job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
 
 printf "Making list of all bam files for this samplesheet\n"
@@ -63,7 +61,7 @@ printf "done\n"
 
 
 printf "Creating a mater mipwise complexity file\n"
-python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname QC_data/$2
+python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
@@ -74,7 +72,7 @@ printf "done\n"
 
 
 printf "Adding Concatenated_name to QC files\n"
-perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --projectname QC_data/$2
+perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.withnames.txt
 printf "done\n"
 
 

@@ -13,7 +13,7 @@ use Pod::Usage;
 
 my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0';
 
-my ($designfile, $complexityfile, $projectname, $help);
+my ($designfile, $complexityfile, $help);
 
 GetOptions(
 	'designfile=s' => \$designfile,
@@ -52,7 +52,7 @@ close $designfile_fh;
 
 
 my $complexityfileprefix = $complexityfile;
-$complexityfileprefix =~ s/indexed\.sort\.collapse\.complexity\.txt/complexity/;
+$complexityfileprefix =~ s/\.txt//;
 my $outputfile = "$complexityfileprefix.withnames.txt";
 open (my $complexityfile_fh, "$complexityfile") or die "Cannot read $complexityfile: $!.\n";
 open (my $output_fh, ">", "$outputfile") or die "Cannot write to $outputfile: $!.\n";

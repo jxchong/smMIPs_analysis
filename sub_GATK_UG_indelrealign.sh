@@ -41,7 +41,7 @@ set -o pipefail
 
 NOW=$(date +"%c")
 if (( $SGE_TASK_ID == 1 )); then
-	printf "Running step 3b, indel realignment: $NOW\n" >> $2.MIPspipeline.log.txt
+	printf "Running step 3b, indel realignment: $NOW\n" >> $2.smMIPspipeline.log.txt
 fi
 
 
