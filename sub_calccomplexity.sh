@@ -61,7 +61,7 @@ printf "done\n"
 
 
 printf "Creating a mater mipwise complexity file\n"
-python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
+python $pipelinebin/calc_complexity_demultiplexed.py --samplekey $1 --projectname QC_data/$2
 printf "done\n"
 
 
@@ -72,7 +72,7 @@ printf "done\n"
 
 
 printf "Adding Concatenated_name to QC files\n"
-perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.withnames.txt
+perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
