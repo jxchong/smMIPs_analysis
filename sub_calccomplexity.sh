@@ -73,6 +73,7 @@ printf "done\n"
 
 printf "Adding Concatenated_name to QC files\n"
 perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --complexityfile QC_data/$2.allsamplesallmips.indexed.sort.collapse.complexity.txt
+perl $pipelinebin/add_concatname_complexity.pl --designfile $3 --complexityfile QC_data/$2.indexed.sort.collapse.complexity.txt
 printf "done\n"
 
 
