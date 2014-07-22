@@ -108,7 +108,7 @@ perl -anF'\t' -e '$F[0] =~ s/chr//; print "$F[0]:$F[1]-$F[2]\n";' $3 > MIPtarget
 # multi-sample calling with Unified Genotyper
 # annotation: SeattleSeq138 to produce a tab-delimited file with annotations
 # eventually will submit to VEP as well
-qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_indelrealign.sh $1 $6 $3
+qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_GATK_UG_indelrealign.sh $1 $6 $3
 qsub -M $5 sub_GATK_UG.sh $1 $6 $5
 
 
