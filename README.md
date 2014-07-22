@@ -77,6 +77,20 @@ or
 	1	117552461	117552862	NM_004258_exon_1_10_chr1_117552472_f	+
 	1	117554161	117554598	NM_004258_exon_2_10_chr1_117554172_f	+
 
+#### Prerequisite Sofware
+
+[PEAR](http://www.exelixis-lab.org/web/software/pear)
+[MIPGEN](http://github.com/shendurelab/MIPGEN)
+GATK
+Java
+samtools
+bwa
+dos2unix / mac2unix
+bgzip / tabix
+SeattleSeq138 jar
+VEP (not yet implemented)
+
+
 #### Notes
 
 While HaplotypeCaller may give fewer false positive variant calls, it appears that HaplotypeCaller is fundamentally not well-suited for MIPS data, see [this ref](http://gatkforums.broadinstitute.org/discussion/3499/haplotypecaller-doesn-t-call-true-variants-which-are-located-on-the-outside-of-duplicated-reads).  Per the GATK developers in the linked thread:
