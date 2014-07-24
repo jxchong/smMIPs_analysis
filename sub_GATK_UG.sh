@@ -97,7 +97,7 @@ printf "Submitting multisample vcf to SeattleSeq138\n"
 # this will put SeattleSeq annotations in separate tab-delimited file
 java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
 -i multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf \
--o multisample_calls/UG.multisample.realigned.polymorphic.filtered.SS138.tsv \
+-o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.SS138.tsv \
 -m $3
 printf "done\n"
 
