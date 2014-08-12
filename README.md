@@ -13,7 +13,7 @@ This pipeline makes assumptions about the format of your data/MIP designs.  In p
 
 If some of these assumptions are not true, you will need to edit sub_prep_samples*.sh to make adjustments.
 
-You may have to run Evan Boyle's MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh.  MIPGEN can be found here: [http://github.com/shendurelab/MIPGEN](http://github.com/shendurelab/MIPGEN)
+You may have to run Evan Boyle's MIPGEN/tools/mipgen_pipeline_builder.py to help you generate the correct commands to replace in sub_prep_samples*.sh.  MIPGEN can also be downloaded here: [http://github.com/shendurelab/MIPGEN](http://github.com/shendurelab/MIPGEN)
 
 
 #### To Use
@@ -79,16 +79,25 @@ or
 
 #### Prerequisite Sofware
 
-[PEAR](http://www.exelixis-lab.org/web/software/pear)
-[MIPGEN](http://github.com/shendurelab/MIPGEN)
-GATK
-Java
-samtools
-bwa
-dos2unix / mac2unix
-bgzip / tabix
-SeattleSeq138 jar
-VEP (not yet implemented)
+	[PEAR](http://www.exelixis-lab.org/web/software/pear)
+	
+	[MIPGEN](http://github.com/shendurelab/MIPGEN)
+	
+	GATK
+
+	Java
+	
+	samtools
+
+	bwa
+
+	dos2unix / mac2unix
+
+	bgzip / tabix
+
+	SeattleSeq138 jar
+
+	VEP (not yet implemented)
 
 
 #### Notes
