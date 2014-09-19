@@ -67,9 +67,10 @@ java -d64 -Xmx88g \
 -rf BadCigar \
 -allowPotentiallyMisencodedQuals \
 -L MIPtargets.intervals \
--I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam \
--o ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.IndelRealigner.intervals \
+-I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam \
+-o ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.IndelRealigner.intervals \
 -dcov 5000 \
+-dt NONE \
 -l INFO \
 -nt 16
 printf "done\n"
@@ -83,9 +84,10 @@ java -d64 -Xmx80g -jar $executbin/GenomeAnalysisTK.jar \
 -R $refdir/Homo_sapiens_assembly19.fasta \
 -rf BadCigar \
 -allowPotentiallyMisencodedQuals \
--I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam \
--targetIntervals ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.IndelRealigner.intervals \
+-I ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam \
+-targetIntervals ${SAMPLENAME}/${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.IndelRealigner.intervals \
 -dcov 5000 \
+-dt NONE \
 -o ${SAMPLENAME}/${SAMPLENAME}.realigned.bam
 printf "done\n"
 

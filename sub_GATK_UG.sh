@@ -69,6 +69,7 @@ java -Xmx32g -jar $executbin/GenomeAnalysisTK.jar \
 -nt 8 \
 -nct 4 \
 -dcov 5000 \
+-dt NONE \
 -glm both \
 -A AlleleBalance \
 -rf BadCigar \

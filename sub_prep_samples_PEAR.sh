@@ -96,6 +96,12 @@ $executbin/samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.s
 printf "done\n"
 
 
+printf "Recalculating the MD and NM values in the bam of unique capture events and indexing resulting bam\n"
+$executbin/samtools calmd ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam $refdir/Homo_sapiens_assembly19.fasta | samtools view -Sb - > ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
+$executbin/samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
+printf "done\n"
+
+
 printf "Editing complexity and samplewise-summary files to change sample name column from N to ${SAMPLENAME}\n"
 sed -i "s/^N\t/${SAMPLENAME}\t/" ${SAMPLENAME}.indexed.sort.collapse.complexity.txt
 sed -i "s/^ALL_SAMPLES\t/${SAMPLENAME}\t/" ${SAMPLENAME}.indexed.sort.collapse.samplewise_summary.txt
