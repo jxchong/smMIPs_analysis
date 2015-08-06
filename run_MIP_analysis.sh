@@ -37,6 +37,11 @@
 ################################################################################################################
 ################################################################################################################
 
+################### only necessary if using modules environment #######################
+source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
+module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge python/2.7.6
+#######################################################################################
+
 
 printf "Setting default permissions for files and folders in this directory so that your group has read/write access\n"
 setfacl -dm u::rwx,g::rwx,o::r .
