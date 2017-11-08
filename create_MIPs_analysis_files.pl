@@ -151,8 +151,8 @@ sub validateInputs {
 		$inputcheck = "--readoverlapbp $readoverlapbp under 20 bases, are you sure?\n";
 	}
 
-	system("source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash");
-	system("module load shared Tools/common dos2unix/6.0.5");
+	# system("source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash");
+	# system("module load shared Tools/common dos2unix/6.0.5");
 	system("dos2unix $designfile");
 	system("mac2unix $designfile");
 	my $designheadvals = getHeader($designfile);

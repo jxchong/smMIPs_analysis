@@ -135,7 +135,7 @@ bgzip --exclude_predicted --domain _--nearest symbol --vcf --offline \
 --fasta $refdir/Homo_sapiens_assembly19.fasta \
 --fork 8 --force_overwrite --sift b --polyphen b --symbol --numbers \
 --biotype --total_length --canonical --ccds --hgvs --shift_hgvs 1 \
---gene_phenotype --check_existing --af_1kg --af_gnomad --regulatory \
+--gene_phenotype --check_existing --af_1kg --af_exac --regulatory \
 --fields Consequence,Codons,Amino_acids,Gene,SYMBOL,Feature,Feature_type,EXON,cDNA_position,CDS_position,Protein_position,Existing_variation,PolyPhen,SIFT,BIOTYPE,CANONICAL,CCDS,HGVSc,HGVSp,AFR_AF,AMR_AF,ASN_AF,EUR_AF,EAS_AF,SAS_AF,ExAC_AFR,ExAC_AMR,ExAC_EAS,ExAC_NFE,ExAC_SAS,ExAC_Adj,PHENO,GENE_PHENO,NEAREST,DOMAINS
 
 
