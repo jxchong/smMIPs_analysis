@@ -86,12 +86,12 @@ if ($readoverlapbp >= 10) {
 
 # create a log file
 open (my $log_handle, ">", "$projectname.smMIPspipeline.log.txt") or die "Cannot write to smMIPspipeline.log.txt: $!.\n";
-print $log_handle "Scripts from MIPs analysis pipeline_smMIPS_v1.0 created on ".scalar(localtime())."\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version 0.7.8-r455 of BWA\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version 3.2-2-gec30cee of GATK\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version 0.1.19-44428cd of samtools\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version Version 4.07b of Tandem Repeats Finder\n";
-print $log_handle "pipeline_smMIPS_v1.0 uses version 0.9.0 of pear\n";
+print $log_handle "Scripts from MIPs analysis pipeline_smMIPS_v1.1 created on ".scalar(localtime())."\n";
+print $log_handle "pipeline_smMIPS_v1.1 uses version 0.7.8-r455 of BWA\n";
+print $log_handle "pipeline_smMIPS_v1.1 uses version 3.2-2-gec30cee of GATK\n";
+print $log_handle "pipeline_smMIPS_v1.1 uses version 0.1.19-44428cd of samtools\n";
+print $log_handle "pipeline_smMIPS_v1.1 uses version Version 4.07b of Tandem Repeats Finder\n";
+print $log_handle "pipeline_smMIPS_v1.1 uses version 0.9.0 of pear\n";
 close $log_handle;
 
 
@@ -151,7 +151,8 @@ sub validateInputs {
 		$inputcheck = "--readoverlapbp $readoverlapbp under 20 bases, are you sure?\n";
 	}
 
-	system("module load dos2unix/6.0.5");
+	system("source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash");
+	system("module load shared Tools/common dos2unix/6.0.5");
 	system("dos2unix $designfile");
 	system("mac2unix $designfile");
 	my $designheadvals = getHeader($designfile);

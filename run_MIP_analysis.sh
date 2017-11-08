@@ -100,8 +100,7 @@ qsub -M $5 sub_calccomplexity.sh $1 $6 $2
 
 # step 3a)
 # multi-sample calling with HaplotypeCaller
-# annotation: SeattleSeq138 to produce a tab-delimited file with annotations
-# eventually will submit to VEP as well
+# annotation: VEP to annotate VCF. SeattleSeq138 to produce a tab-delimited file with annotations
 # uses Evan's script to generate capture events summary files
 qsub -M $5 sub_GATK_HC.sh $1 $6 $3 $5
 
