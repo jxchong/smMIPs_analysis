@@ -98,11 +98,11 @@ qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_prep_samples.sh $1 $2
 qsub -M $5 sub_calccomplexity.sh $1 $6 $2
 
 
-# step 3a)
+# step 3a) Disabling as of 2017-11-08 because there's no point in running HC since HaplotypeCaller doesn't work on MIP data (all reads have exact same start and stop)
 # multi-sample calling with HaplotypeCaller
 # annotation: VEP to annotate VCF. SeattleSeq138 to produce a tab-delimited file with annotations
 # uses Evan's script to generate capture events summary files
-qsub -M $5 sub_GATK_HC.sh $1 $6 $3 $5
+# qsub -M $5 sub_GATK_HC.sh $1 $6 $3 $5
 
 
 # step 3b)

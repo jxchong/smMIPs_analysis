@@ -51,6 +51,7 @@ NOW=$(date +"%c")
 printf "Running step 3b, multisample Unified Genotyper calling and SeattleSeq job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
 
+
 printf "Making list of all .bam files..."
 find */* -name "*.realigned.bam" > bam.realigned.list
 printf "done\n"
@@ -102,15 +103,6 @@ java -Xmx8g -jar $executbin/GenomeAnalysisTK.jar \
 printf "done\n"
 
 
-printf "Submitting multisample vcf to SeattleSeq138\n"
-# this will put SeattleSeq annotations in separate tab-delimited file
-java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
--i multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf \
--o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.SS138.tsv \
--m $3
-printf "done\n"
-
-
 # make a bgzip compressed version of the vcfs
 $executbin/bgzip -c multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf > multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz
 $executbin/tabix -p vcf multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz
@@ -140,4 +132,20 @@ bgzip --exclude_predicted --domain _--nearest symbol --vcf --offline \
 
 
 tabix -p vcf multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz
+printf "done with VEP\n"
+
+
+printf "Submitting multisample vcf to SeattleSeq138\n"
+# this will put SeattleSeq annotations in separate tab-delimited file
+java -Xmx4g -jar $executbin/getAnnotationSeattleSeq138.031014.jar \
+-i multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf \
+-o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.SS138.tsv \
+-m $3
+printf "done\n"
+
+
+# clean up all the interim data files
+printf "Making raw_combined_reads directory and cleaning up files..."
+bash -c '[ -d raw_data ] || mkdir raw_data'
+bash -c '[ -d raw_data ] && mv *fastq.gz raw_data/.'
 printf "done\n"
