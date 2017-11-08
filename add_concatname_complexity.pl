@@ -11,7 +11,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 
-my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0';
+my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.1';
 
 my ($designfile, $complexityfile, $help);
 
@@ -26,7 +26,7 @@ if (!defined $designfile) {
 	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --designfile not given\n");
 } elsif (!defined $complexityfile) {
 	pod2usage(-exitval=>2, -verbose=>1, -message => "$0: --complexityfile not given\n");
-}  
+}
 
 
 # read in mip_key => concantenated_name/mip_name mapping
@@ -102,7 +102,7 @@ perl B<add_concatname_complexity.pl> I<[options]>
 
 	path to the MIP complexity file, which must be tab-delimited and contain a column called mip_key
 
-=item B<--help> 
+=item B<--help>
 
 	print full documentation
 
@@ -125,7 +125,7 @@ NOTE: Should have a column named Concatenated_name or mip_name containing the na
 
 perl add_concatname_complexity.pl --designfile PIEZO2_allMIPs.designfile.txt --projectname 2014-02-28-PIEZO2_analysis1
 
-Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.0/examples/
+Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.1/examples/
 
 
 =head1 AUTHOR

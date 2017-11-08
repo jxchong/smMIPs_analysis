@@ -17,7 +17,7 @@
 # 7 = sequencer used (HiSeqDorschner|HiSeqNickerson|MiSeq)
 
 # Description of input file formats:
-# 
+#
 # File #1 = Sample key:
 # 1st column: numeric ID (1 through x)
 # 2nd column: barcode (reverse complement)
@@ -39,7 +39,7 @@
 
 ################### only necessary if using modules environment #######################
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge python/2.7.6
+module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge python/2.7.6 conda/4.3.22
 #######################################################################################
 
 
@@ -65,8 +65,8 @@ find -type f -iname '*Undetermined*.fastq*' -exec rm -f {} \;
 
 
 # make directories to store logs
-bash -c '[ -d logs_queue ] || mkdir logs_queue' 
-bash -c '[ -d logs_queue/prep_samples ] || mkdir logs_queue/prep_samples' 
+bash -c '[ -d logs_queue ] || mkdir logs_queue'
+bash -c '[ -d logs_queue/prep_samples ] || mkdir logs_queue/prep_samples'
 bash -c '[ -d logs_queue/UnifiedGenotyper ] || mkdir logs_queue/UnifiedGenotyper'
 # bash -c '[ -d logs_queue/SeattleSeq ] || mkdir logs_queue/SeattleSeq'
 bash -c '[ -d multisample_calls ] || mkdir multisample_calls'
@@ -123,4 +123,3 @@ qsub -M $5 sub_GATK_UG.sh $1 $6 $5
 NOW=$(date +"%c")
 printf "###########################################\n" >> $6.smMIPspipeline.log.txt
 printf "Submitted analysis jobs: $NOW\n" >> $6.smMIPspipeline.log.txt
-

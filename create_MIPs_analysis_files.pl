@@ -11,12 +11,12 @@ use Getopt::Long;
 use Pod::Usage;
 
 
-my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.0/smMIPs_analysis';
+my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.1/smMIPs_analysis';
 
 my ($samplesheet, $designfile, $mipbedfile, $readoverlapbp, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
 
 GetOptions(
-	'samplesheet=s' => \$samplesheet, 
+	'samplesheet=s' => \$samplesheet,
 	'designfile=s' => \$designfile,
 	'MIPbed=s' => \$mipbedfile,
 	'readoverlapbp=i' => \$readoverlapbp,
@@ -144,18 +144,18 @@ print "You can monitor the overall log of what you've been doing by viewing $pro
 
 sub validateInputs {
 	my $inputcheck = 1;
-	
+
 	if ($projectname =~ m/\!\/ \\:/) {
 		$inputcheck = "--projectname $projectname contains problematic characters (! / \ : [space])";
 	} elsif ($readoverlapbp < 20) {
 		$inputcheck = "--readoverlapbp $readoverlapbp under 20 bases, are you sure?\n";
-	}	
-	
+	}
+
 	system("module load dos2unix/6.0.5");
 	system("dos2unix $designfile");
 	system("mac2unix $designfile");
 	my $designheadvals = getHeader($designfile);
-	
+
 	if (!defined ${$designheadvals}{'chr'}) {
 		$inputcheck = "--designfile $designfile is missing a column named 'chr'\n";
 	} elsif (!defined ${$designheadvals}{'lig_probe_sequence'}) {
@@ -178,7 +178,7 @@ sub validateInputs {
 	if (scalar keys %{$mipbedvals} < 5) {
 		$inputcheck = "--MIPbed $mipbedfile is missing columns (should have columns chr,start,stop,name,strand)\n";
 	}
-	
+
 	if ($sequencer =~ /^MiSeq$/i) {
 		$sequencer = 'MiSeq';
 	} elsif ($sequencer =~ /^HiSeqDorschner$/i) {
@@ -194,18 +194,18 @@ sub validateInputs {
 
 sub getHeader {
 	my $filename = $_[0];
-	
+
 	open (my $filehandle, "$filename") or die "Cannot read $filename: $!.\n";
 	my $firstline = <$filehandle>;
 	close $filehandle;
-	
+
 	$firstline =~ s/\s+$//;					# Remove line endings
     chomp($firstline);
     chop($firstline) if ($firstline =~ m/\r$/);		# get rid of stupid Excel carriage return line endings
 	my @line = split("\t", $firstline);
 	my %values;
-	@values{@line} = @line;	
-	
+	@values{@line} = @line;
+
 	return \%values;
 }
 
@@ -215,7 +215,7 @@ sub makeSampleKey {
 	$samplesheet =~ s/"//g;
 	system("dos2unix \"$samplesheet\"");
 	system("mac2unix \"$samplesheet\"");
-	
+
 	my @sampledata;
 	my $headerpassed = 0;
 	open (my $samplesheet_handle, "$samplesheet") or die "Cannot read $samplesheet: $!.\n";
@@ -235,24 +235,24 @@ sub makeSampleKey {
 			} else {
 				die "The samplesheet $samplesheet has a format I cannot handle (possibly: not csv, not tab-delimited, doesn't have 4 columns (Sample_ID,Sample_Name,GenomeFolder,index) in the sample section)\n";
 			}
-			push(@sampledata, "$sampleentry[0]\t$sampleentry[1]\t$sampleentry[3]");	
+			push(@sampledata, "$sampleentry[0]\t$sampleentry[1]\t$sampleentry[3]");
 		}
 		if ($line =~ /Sample_ID/i) {
 			$headerpassed = 1;
 		}
 	}
 	close $samplesheet_handle;
-	
+
 	if ($headerpassed == 0) {
 		die "Something is wrong with the samplesheet $samplesheet because I could not find the sample area containing a Sample_ID column\n";
 	}
-	
+
 	open (my $samplekey_handle, ">", "sample_key.txt") or die "Cannot write sample_key.txt: $!.\n";
 	foreach my $line (@sampledata) {
 		print $samplekey_handle "$line\n";
 	}
 	close $samplekey_handle;
-	
+
 	return "sample_key.txt";
 }
 
@@ -267,7 +267,7 @@ sub makeSampleKey {
 =head1 NAME
 
 
-create_MIPs_analysis_files.pl - Script to copy over current version of MIPs analysis pipeline files and make some input files.  
+create_MIPs_analysis_files.pl - Script to copy over current version of MIPs analysis pipeline files and make some input files.
 
 
 =head1 SYNOPSIS
@@ -280,7 +280,7 @@ perl B<create_MIPs_analysis_files.pl> I<[options]>
 
 =over 4
 
-=item B<--samplesheet> F<sample sheet file>	
+=item B<--samplesheet> F<sample sheet file>
 
 	path to MIP Sample Sheet (if you don't know how to deal with spaces in the filename, remove the spaces first)
 
@@ -308,7 +308,7 @@ perl B<create_MIPs_analysis_files.pl> I<[options]>
 
 	identifying name for this analysis run for this project (I recommend including the date in case you want to try multiple analysis settings: "2013-01-01-My_MIPS_Project")
 
-=item B<--help> 
+=item B<--help>
 
 	print full documentation
 
@@ -354,7 +354,7 @@ BED file with MIPs: merged BED file with final MIP regions for each gene; create
 
 perl create_MIPs_analysis_files.pl --samplesheet SampleSheet --designfile MYGENE_allMIPs.designfile.txt --MIPbed MYGENE_mips.bed --readoverlapbp 20 --email jxchong@uw.edu --projectname 2014-02-28-MYGENE_analysis1
 
-Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.0/examples/
+Also see /labdata6/allabs/mips/pipeline_smMIPS_v1.1/examples/
 
 
 =head1 AUTHOR

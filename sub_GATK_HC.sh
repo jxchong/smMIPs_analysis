@@ -13,7 +13,7 @@
 
 # arguments should be:
 # $1 = sample ID key text file for all samples
-	# sampleIDkey format: 
+	# sampleIDkey format:
 	# 1st column: numeric ID (1 through x)
 	# 2nd column: sample name
 	# 3rd column optional
@@ -23,11 +23,11 @@
 # $5 = MIP design file
 
 # location of Pediatrics analysis pipeline bin
-pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/smMIPs_analysis'
+pipelinebin='/labdata6/allabs/mips/pipeline_smMIPS_v1.1/smMIPs_analysis'
 # location of MIPGEN/tools script directory
-mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools'
+mipgentoolsbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools'
 # location of executables
-executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.0/executables'
+executbin='/labdata6/allabs/mips/pipeline_smMIPS_v1.1/executables'
 # directory to reference files (reference genome fasta and various indexes)
 refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
@@ -37,9 +37,9 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 ################### only necessary if using modules environment #######################
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6
+module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6 conda/4.3.22
 #######################################################################################
-export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.0/MIPGEN/tools/
+export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools/
 #######################################################################################
 
 
@@ -49,7 +49,7 @@ set -o pipefail
 
 NOW=$(date +"%c")
 printf "Running step 3a, calling with GATK HaplotypeCaller: $NOW\n" >> $2.smMIPspipeline.log.txt
- 
+
 
 printf "Multisample calling with HaplotypeCaller\n"
 java -jar $executbin/GenomeAnalysisTK.jar \
@@ -86,7 +86,7 @@ printf "done\n"
 
 # clean up all the original fastq.gz files
 printf "Making raw_combined_reads directory and cleaning up files..."
-bash -c '[ -d raw_data ] || mkdir raw_data' 
+bash -c '[ -d raw_data ] || mkdir raw_data'
 bash -c '[ -d raw_data ] && mv *fastq.gz raw_data/.'
 printf "done\n"
 
@@ -94,4 +94,3 @@ printf "done\n"
 # make a bgzip compressed version of the vcfs
 $executbin/bgzip -c multisample_calls/$2.HC.multisample.vcf > multisample_calls/$2.HC.multisample.vcf.gz
 $executbin/tabix -p vcf multisample_calls/$2.HC.multisample.vcf.gz
-
