@@ -125,18 +125,19 @@ printf "Annotating multisample vcf with VEP v89\n"
 ### you can also easily use vcftools or bcftools to parse this out into a tab-delimited format, e.g.
 ### ~/bin/bcftools query -H --f '%CHROM\t%POS\t%REF\t%ALT\t%TYPE\t%ID\t%FILTER\t%INFO/VEPNAME[\t%TGT]\n'
 
-perl vep \
+vep \
 -i multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.vcf.gz \
 -o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz \
 --compress_output \
 bgzip --exclude_predicted --domain _--nearest symbol --vcf --offline \
---cache --dir_cache  /cm/shared/apps/vep/vep89/homo_sapiens/GRCh37/ \
+--cache --dir_cache /cm/shared/apps/vep/vep89/ \
 --species homo_sapiens --assembly GRCh37 \
 --fasta $refdir/Homo_sapiens_assembly19.fasta \
 --fork 8 --force_overwrite --sift b --polyphen b --symbol --numbers \
 --biotype --total_length --canonical --ccds --hgvs --shift_hgvs 1 \
 --gene_phenotype --check_existing --af_1kg --af_gnomad --regulatory \
---fields Consequence,Codons,Amino_acids,Gene,SYMBOL,Feature,Feature_type,EXON,cDNA_position,CDS_position,Protein_position,Existing_variation,PolyPhen,SIFT,BIOTYPE,CANONICAL,CCDS,HGVSc,HGVSp,AFR_AF,AMR_AF,ASN_AF,EUR_AF,EAS_AF,SAS_AF,gnomAD_AFR_AF,gnomAD_AMR_AF,gnomAD_ASJ_AF,gnomAD_EAS_AF,gnomAD_FIN_AF,gnomAD_NFE_AF,gnomAD_SAS_AF,PHENO,GENE_PHENO,NEAREST,DOMAINS
+--fields Consequence,Codons,Amino_acids,Gene,SYMBOL,Feature,Feature_type,EXON,cDNA_position,CDS_position,Protein_position,Existing_variation,PolyPhen,SIFT,BIOTYPE,CANONICAL,CCDS,HGVSc,HGVSp,AFR_AF,AMR_AF,ASN_AF,EUR_AF,EAS_AF,SAS_AF,ExAC_AFR,ExAC_AMR,ExAC_EAS,ExAC_NFE,ExAC_SAS,ExAC_Adj,PHENO,GENE_PHENO,NEAREST,DOMAINS
+
 
 tabix -p vcf multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz
 printf "done\n"
