@@ -117,7 +117,7 @@ $executbin/tabix -p vcf multisample_calls/$2.UG.multisample.realigned.polymorphi
 
 
 printf "Variant decomposition with VT\n"
-zcat multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz | sed 's/ID=AD,Number=./ID=AD,Number=R/' | vt decompose -s - | vt normalize -r $refdir/Homo_sapiens_assembly19.fasta - | bgzip -c > multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.vcf.gz
+zcat multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz | sed 's/ID=AD,Number=./ID=AD,Number=R/' | /cm/shared/apps/vt/vt-master/vt decompose -s - | /cm/shared/apps/vt/vt-master/vt normalize -r $refdir/Homo_sapiens_assembly19.fasta - | bgzip -c > multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.vcf.gz
 
 
 printf "Annotating multisample vcf with VEP v89\n"
