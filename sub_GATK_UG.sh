@@ -37,7 +37,7 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 ################### only necessary if using modules environment #######################
 source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6 conda/4.3.22 perl/5.20.2 vep/89
+module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6 conda/4.3.22 perl/5.20.2 vep/89 vt/0.57.0
 #######################################################################################
 export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools/
 #######################################################################################
@@ -117,7 +117,7 @@ $executbin/tabix -p vcf multisample_calls/$2.UG.multisample.realigned.polymorphi
 
 
 printf "Variant decomposition with VT\n"
-zcat multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz | sed 's/ID=AD,Number=./ID=AD,Number=R/' | /cm/shared/apps/vt/vt-master/vt decompose -s - | /cm/shared/apps/vt/vt-master/vt normalize -r $refdir/Homo_sapiens_assembly19.fasta - | bgzip -c > multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.vcf.gz
+zcat multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.vcf.gz | sed 's/ID=AD,Number=./ID=AD,Number=R/' | vt decompose -s - | vt normalize -r $refdir/Homo_sapiens_assembly19.fasta - | bgzip -c > multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.vcf.gz
 
 
 printf "Annotating multisample vcf with VEP v89\n"
