@@ -35,8 +35,8 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 
 ################### only necessary if using modules environment #######################
-source /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7.8 python/2.7.6 conda/4.3.22
+.  /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
+module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7.8 python/2.7.6 conda/4.3.22 samtools/1.2
 #######################################################################################
 export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools/
 #######################################################################################
@@ -77,28 +77,28 @@ printf "done\n"
 
 
 printf "Sorting aligned sam file\n"
-$executbin/samtools view -bS ${SAMPLENAME}.indexed.sam | $executbin/samtools sort - ${SAMPLENAME}.indexed.sort
+samtools view -bS ${SAMPLENAME}.indexed.sam | samtools sort - ${SAMPLENAME}.indexed.sort
 printf "done\n"
 
 
 printf "Collapsing unique capture events\n"
-$executbin/samtools view -h ${SAMPLENAME}.indexed.sort.bam | python $mipgentoolsbin/mipgen_smmip_collapser.py 5 ${SAMPLENAME}.indexed.sort.collapse -m $2 -f 1 -s
+samtools view -h ${SAMPLENAME}.indexed.sort.bam | python $mipgentoolsbin/mipgen_smmip_collapser.py 5 ${SAMPLENAME}.indexed.sort.collapse -m $2 -f 1 -s
 printf "done\n"
 
 
 printf "Making sorted bam of unique capture events\n"
-$executbin/samtools view -bS ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sam | $executbin/samtools sort - ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort
+samtools view -bS ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sam | samtools sort - ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort
 printf "done\n"
 
 
 printf "Indexing sorted bam of unique capture events\n"
-$executbin/samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam
+samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam
 printf "done\n"
 
 
 printf "Recalculating the MD and NM values in the bam of unique capture events and indexing resulting bam\n"
-$executbin/samtools calmd ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam $refdir/Homo_sapiens_assembly19.fasta | samtools view -Sb - > ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
-$executbin/samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
+samtools calmd ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.bam $refdir/Homo_sapiens_assembly19.fasta | samtools view -Sb - > ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
+samtools index ${SAMPLENAME}.indexed.sort.collapse.all_reads.unique.sort.calmd.bam
 printf "done\n"
 
 
@@ -109,6 +109,6 @@ printf "done\n"
 
 
 printf "Moving all files for ${SAMPLENAME} into separate folder\n"
-mkdir ${SAMPLENAME}
+bash -c "[ -d raw_data ] || mkdir ${SAMPLENAME}"
 mv ${SAMPLENAME}.* ${SAMPLENAME}/.
 printf "done\n"
