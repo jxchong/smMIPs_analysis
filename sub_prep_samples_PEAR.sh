@@ -109,6 +109,6 @@ printf "done\n"
 
 
 printf "Moving all files for ${SAMPLENAME} into separate folder\n"
-bash -c "[ -d raw_data ] || mkdir ${SAMPLENAME}"
+bash -c "[ -d ${SAMPLENAME} ] || mkdir ${SAMPLENAME}"
 mv ${SAMPLENAME}.* ${SAMPLENAME}/.
 printf "done\n"
