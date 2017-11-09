@@ -116,6 +116,9 @@ qsub -M $5 -t 1-`wc -l $1 | cut -f1 -d' '`:1 sub_GATK_UG_indelrealign.sh $1 $6 $
 qsub -M $5 sub_GATK_UG.sh $1 $6 $5
 
 
+# step 4)
+# run GEMINI (optional)
+qsub -M $5 sub_loadGEMINI.sh $6
 
 
 

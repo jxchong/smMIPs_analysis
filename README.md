@@ -1,4 +1,4 @@
-smMIPs_analysis
+smMIPs_analysis v1.1
 ===============
 #### Description
 
@@ -71,7 +71,7 @@ If this file contains an extra column named "Concatenated_name" or "mip_name", t
 	chr1	117552461	117552862	NM_004258_exon_1_10_chr1_117552472_f	+
 	chr1	117554161	117554598	NM_004258_exon_2_10_chr1_117554172_f	+
 
-or 
+or
 
 	1	117544361	117544492	NM_004258_exon_0_10_chr1_117544372_f	+
 	1	117552461	117552862	NM_004258_exon_1_10_chr1_117552472_f	+
@@ -80,13 +80,13 @@ or
 #### Prerequisite Sofware
 
 	[PEAR](http://www.exelixis-lab.org/web/software/pear)
-	
+
 	[MIPGEN](http://github.com/shendurelab/MIPGEN)
-	
+
 	GATK
 
 	Java
-	
+
 	samtools
 
 	bwa
@@ -97,7 +97,7 @@ or
 
 	SeattleSeq138 jar
 
-	VEP (not yet implemented)
+	VEP v89 with cache for GRCh37
 
 
 #### Notes

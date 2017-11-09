@@ -48,7 +48,7 @@ set -o pipefail
 
 
 NOW=$(date +"%c")
-printf "Running step 3b, multisample Unified Genotyper calling and SeattleSeq job: $NOW\n" >> $2.smMIPspipeline.log.txt
+printf "Running step 3b, multisample Unified Genotyper calling and SeattleSeq/VEP annotation job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
 
 
