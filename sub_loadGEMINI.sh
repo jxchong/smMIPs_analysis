@@ -46,6 +46,6 @@ printf "Running step 4, generating basic stats and loading VEP-annotated file in
 
 bcftools query -l multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz > multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.samplelist.txt
 
-gemini load -v multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz -t VEP –-skip-pls --cores 4 multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.db
+gemini load -v multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz -t VEP --cores 4 multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.db
 
 printf "done with loading gemini database\n"
