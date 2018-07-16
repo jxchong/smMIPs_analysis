@@ -36,7 +36,7 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 ################### only necessary if using modules environment #######################
 .  /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7.8 python/2.7.6 conda/4.3.22 samtools/1.2
+module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge pear/0.9.0 BWA/0.7.8 python/2.7.6 conda/4.5.0 samtools/1.2
 #######################################################################################
 export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools/
 #######################################################################################

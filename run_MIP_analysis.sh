@@ -39,7 +39,7 @@
 
 ################### only necessary if using modules environment #######################
 .  /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge python/2.7.6 conda/4.3.22
+module load shared Tools/common dos2unix/6.0.5 plink/1.07 sge python/2.7.6 conda/4.5.0
 #######################################################################################
 
 
