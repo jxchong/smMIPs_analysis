@@ -48,6 +48,9 @@ set -o pipefail
 NOW=$(date +"%c")
 printf "Running step 2, calccomplexity job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
+THISSCRIPT=$(basename $0)
+NODENAME=$(hostname)
+printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
 
 printf "Making list of all bam files for this samplesheet\n"
 find */* -name "*.indexed.sort.collapse.all_reads.unique.sort.bam" > bam.list

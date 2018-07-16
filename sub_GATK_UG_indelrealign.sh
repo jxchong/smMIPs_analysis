@@ -51,6 +51,9 @@ if (( $SGE_TASK_ID == 1 )); then
 	printf "Running step 3b, indel realignment: $NOW\n" >> $2.smMIPspipeline.log.txt
 fi
 
+THISSCRIPT=$(basename $0)
+NODENAME=$(hostname)
+printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
 
 SAMPLENUM=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $1; exit }' $1)
 SAMPLENAME=$(awk -v linenum=$SGE_TASK_ID 'NR==linenum { print $2; exit }' $1)

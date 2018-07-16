@@ -31,7 +31,7 @@ refdir='/labdata6/allabs/mips/references/b37/BWA0.7.8'
 
 ################### only necessary if using modules environment #######################
 .  /cm/local/apps/environment-modules/3.2.10/Modules/3.2.10/init/bash
-module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6 conda/4.3.22 perl/5.20.2 vep/89 vt/0.57.0 gemini/0.20.0
+module load shared Tools/common dos2unix/6.0.5 sge java/1.7.0_55 python/2.7.6 conda/4.5.0 perl/5.20.2 vep/89 vt/0.57.0 gemini/0.20.1
 #######################################################################################
 export PYTHONPATH=/labdata6/allabs/mips/pipeline_smMIPS_v1.1/MIPGEN/tools/
 #######################################################################################
@@ -43,6 +43,10 @@ set -o pipefail
 
 NOW=$(date +"%c")
 printf "Running step 4, generating basic stats and loading VEP-annotated file into GEMINI database. NOTE: ~/.gemini/gemini-config.yaml file must exist $NOW\n" >> $1.smMIPspipeline.log.txt
+
+THISSCRIPT=$(basename $0)
+NODENAME=$(hostname)
+printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
 
 bcftools query -l multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz > multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.samplelist.txt
 

@@ -50,6 +50,9 @@ set -o pipefail
 NOW=$(date +"%c")
 printf "Running step 3a, calling with GATK HaplotypeCaller: $NOW\n" >> $2.smMIPspipeline.log.txt
 
+THISSCRIPT=$(basename $0)
+NODENAME=$(hostname)
+printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
 
 printf "Multisample calling with HaplotypeCaller\n"
 java -jar $executbin/GenomeAnalysisTK.jar \

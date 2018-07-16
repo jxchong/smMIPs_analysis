@@ -50,7 +50,9 @@ set -o pipefail
 NOW=$(date +"%c")
 printf "Running step 3b, multisample Unified Genotyper calling and SeattleSeq/VEP annotation job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
-
+THISSCRIPT=$(basename $0)
+NODENAME=$(hostname)
+printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
 
 printf "Making list of all .bam files..."
 find */* -name "*.realigned.bam" > bam.realigned.list
@@ -122,7 +124,7 @@ vep \
 -o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz \
 --compress_output \
 bgzip --exclude_predicted --domain _--nearest symbol --vcf --offline \
---cache --dir_cache /cm/shared/apps/vep/vep89/ \
+--cache --dir_cache /cm/shared/apps/vep/vep89/homo_sapiens/89_GRCh37 \
 --species homo_sapiens --assembly GRCh37 \
 --fasta $refdir/Homo_sapiens_assembly19.fasta \
 --fork 8 --force_overwrite --sift b --polyphen b --symbol --numbers \
