@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 ##$ -V
-##$ -m eas
+#$ -m es
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=8G
@@ -52,7 +52,7 @@ printf "Running step 3a, calling with GATK HaplotypeCaller: $NOW\n" >> $2.smMIPs
 
 THISSCRIPT=$(basename $0)
 NODENAME=$(hostname)
-printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
+printf "Running $THISSCRIPT on cluster node $NODENAME\n"
 
 printf "Multisample calling with HaplotypeCaller\n"
 java -jar $executbin/GenomeAnalysisTK.jar \

@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 ##$ -V
-##$ -m eas
+#$ -m es
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=14G
@@ -55,7 +55,8 @@ fi
 
 THISSCRIPT=$(basename $0)
 NODENAME=$(hostname)
-printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
+printf "Running $0 on sample $SAMPLENAME on cluster node $NODENAME\n"
+
 
 printf "Unzipping fastqs for sample ${SAMPLENAME} (sample # ${SAMPLENUM}) for combining with PEAR\n"
 zcat "${SAMPLENAME}_S${SAMPLENUM}_L001_R1_001.fastq.gz" > "${SAMPLENAME}_S${SAMPLENUM}.R1.fastq"

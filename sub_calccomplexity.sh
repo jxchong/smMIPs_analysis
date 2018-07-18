@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 ##$ -V
-##$ -m eas
+#$ -m es
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=8G
@@ -50,7 +50,7 @@ printf "Running step 2, calccomplexity job: $NOW\n" >> $2.smMIPspipeline.log.txt
 
 THISSCRIPT=$(basename $0)
 NODENAME=$(hostname)
-printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
+printf "Running $0 on cluster node $NODENAME\n"
 
 printf "Making list of all bam files for this samplesheet\n"
 find */* -name "*.indexed.sort.collapse.all_reads.unique.sort.bam" > bam.list

@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 #$ -V
-#$ -m eas
+#$ -m es
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=34G
@@ -46,7 +46,7 @@ printf "Running step 4, generating basic stats and loading VEP-annotated file in
 
 THISSCRIPT=$(basename $0)
 NODENAME=$(hostname)
-printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
+printf "Running $0 on cluster node $NODENAME\n"
 
 bcftools query -l multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz > multisample_calls/$1.UG.multisample.realigned.polymorphic.filtered.VT.VEP.samplelist.txt
 

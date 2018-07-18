@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 #$ -V
-#$ -m eas
+#$ -m es
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=34G
@@ -52,7 +52,7 @@ printf "Running step 3b, multisample Unified Genotyper calling and SeattleSeq/VE
 
 THISSCRIPT=$(basename $0)
 NODENAME=$(hostname)
-printf "Running $THISSCRIPT on sample $PREFIX on cluster node $NODENAME"
+printf "Running $0 on cluster node $NODENAME\n"
 
 printf "Making list of all .bam files..."
 find */* -name "*.realigned.bam" > bam.realigned.list
