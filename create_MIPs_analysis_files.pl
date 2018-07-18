@@ -236,6 +236,10 @@ sub makeSampleKey {
 			} else {
 				die "The samplesheet $samplesheet has a format I cannot handle (possibly: not csv, not tab-delimited, doesn't have 4 columns (Sample_ID,Sample_Name,GenomeFolder,index) in the sample section)\n";
 			}
+			my $detectunderscores = ($sampleentry[1] =~ s/_/-/g;);
+			if ($detectunderscores ne '') {
+				print "IMPORTANT!! The MiSeq software automatically replaces all underscore characters with hyphens but does not warn you about this. This script automatically generates a sample key with the underscores replaced as well to match with the MiSeq fastq outputs.\n";
+			}
 			push(@sampledata, "$sampleentry[0]\t$sampleentry[1]\t$sampleentry[3]");
 		}
 		if ($line =~ /Sample_ID/i) {
