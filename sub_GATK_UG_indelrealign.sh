@@ -1,6 +1,6 @@
 #$ -S /bin/bash
 #$ -V
-#$ -m es
+#$ -m as
 #$ -cwd
 #$ -q new.q
 ##$ -l mem_requested=8G
