@@ -124,7 +124,7 @@ vep \
 -o multisample_calls/$2.UG.multisample.realigned.polymorphic.filtered.VT.VEP.vcf.gz \
 --compress_output \
 bgzip --exclude_predicted --domain _--nearest symbol --vcf --offline \
---cache --dir_cache /cm/shared/apps/vep/vep89/homo_sapiens/89_GRCh37 \
+--cache --dir_cache /cm/shared/apps/vep/vep89/ \
 --species homo_sapiens --assembly GRCh37 \
 --fasta $refdir/Homo_sapiens_assembly19.fasta \
 --fork 8 --force_overwrite --sift b --polyphen b --symbol --numbers \
