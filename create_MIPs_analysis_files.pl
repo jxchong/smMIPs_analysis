@@ -11,7 +11,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 
-my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.1/smMIPs_analysis';
+my $headbin = '/labdata6/allabs/mips/pipeline_smMIPS_v1.1.1/smMIPs_analysis';
 
 my ($samplesheet, $designfile, $mipbedfile, $readoverlapbp, $email, $projectname, $sequencer, $mipbedfilenochr, $help);
 
